@@ -193,7 +193,15 @@ The project includes database and recovery validation work covering:
 - SQL Server Agent backup automation
 - Point-in-time recovery testing
 
-Screenshots and supporting evidence are maintained in `screenshots/`, where available. Validation results apply to the documented lab environment and should not be interpreted as guarantees for every backup or deployment.
+## 🎬 Application Demo
+
+Watch the walkthrough to see DeepDerma-LabOps in action, including image analysis, ML prediction results, and application functionality.
+
+[**▶ View the DeepDerma-LabOps Demo Video**](screenshots/DeepDerma-LabOps-Demo.mp4)
+
+### Screenshots
+
+Explore the application screenshots in the [`screenshots/`](screenshots/) directory.
 
 ## ⚠️ Scope and Limitations
 
@@ -204,6 +212,7 @@ Screenshots and supporting evidence are maintained in `screenshots/`, where avai
 - The complete seven-day backup retention window has not been verified.
 - Query performance results depend on the workload, data distribution, indexes, execution plan, and caching.
 - A successful database consistency check does not, by itself, prove that every historical backup is recoverable.
+
 
 ## 👩‍💻 Author
 
