@@ -10,6 +10,39 @@ Beyond the machine learning workflow, the project explores the engineering pract
 
 ---
 
+
+## 🏗️ Project Architecture
+
+```mermaid
+flowchart TD
+    U["👤 User"] --> UI["Streamlit Application"]
+
+    UI --> ML["Python ML Inference Layer"]
+
+    ML --> D["DenseNet201"]
+    ML --> R["ResNet101"]
+    ML --> E["EfficientNetB0"]
+
+    D --> P["Prediction Results"]
+    R --> P
+    E --> P
+
+    P --> UI
+
+    UI <--> DB[("SQL Server - DeepDermaDB")]
+
+    DB --> T["Experiments · Predictions · Scores · Audit Events"]
+
+    classDef app fill:#e8eaf6,stroke:#5c6bc0,color:#1a237e
+    classDef ml fill:#e0f2f1,stroke:#00897b,color:#004d40
+    classDef database fill:#fce4ec,stroke:#ad1457,color:#880e4f
+
+    class UI app
+    class ML,D,R,E,P ml
+    class DB,T database
+```
+
+
 ## ✨ Key Features
 
 - **Multi-model image analysis** — Compare predictions from DenseNet201, ResNet101, and EfficientNetB0.
