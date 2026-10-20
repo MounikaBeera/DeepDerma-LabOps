@@ -6,42 +6,30 @@ DeepDerma explores how deep learning and computer vision can be integrated into 
 
 Beyond the machine learning workflow, the project explores the engineering practices that make an application more maintainable and reliable, including database security, automated backups, recovery validation, and query performance optimization.
 
-> **Focus areas:** Deep Learning · Computer Vision · Python · Streamlit · SQL Server
+**Focus areas:** Deep Learning · Computer Vision · Python · Streamlit · SQL Server · Database Administration
 
 ---
-
 
 ## 🏗️ Project Architecture
 
 ```mermaid
 flowchart TD
-    U["👤 User"] --> UI["Streamlit Application"]
+    U[User] --> UI[Streamlit Application]
+    UI --> ML[Python ML Inference Layer]
 
-    UI --> ML["Python ML Inference Layer"]
+    ML --> D[DenseNet201]
+    ML --> R[ResNet101]
+    ML --> E[EfficientNetB0]
 
-    ML --> D["DenseNet201"]
-    ML --> R["ResNet101"]
-    ML --> E["EfficientNetB0"]
-
-    D --> P["Prediction Results"]
+    D --> P[Prediction Results]
     R --> P
     E --> P
 
     P --> UI
+    UI <--> DB[(SQL Server - DeepDermaDB)]
 
-    UI <--> DB[("SQL Server - DeepDermaDB")]
-
-    DB --> T["Experiments · Predictions · Scores · Audit Events"]
-
-    classDef app fill:#e8eaf6,stroke:#5c6bc0,color:#1a237e
-    classDef ml fill:#e0f2f1,stroke:#00897b,color:#004d40
-    classDef database fill:#fce4ec,stroke:#ad1457,color:#880e4f
-
-    class UI app
-    class ML,D,R,E,P ml
-    class DB,T database
+    DB --> T[Experiments, Predictions, Scores and Audit Events]
 ```
-
 
 ## ✨ Key Features
 
@@ -49,13 +37,14 @@ flowchart TD
 - **Model score exploration** — Review model outputs across the four classes used during training.
 - **Interactive interface** — Upload images and explore analysis results through a Streamlit application.
 - **Database-backed records** — Store and organize model information, experiments, predictions, prediction scores, and audit events.
-- **Controlled database access** — Use application-specific SQL Server permissions instead of relying on unrestricted database access.
-- **Backup and recovery workflows** — Implement full, differential, and transaction-log backups, with point-in-time recovery validation.
-- **Query performance tuning** — Evaluate index-based optimization using SQL Server execution and logical-read evidence.
+- **Controlled database access** — Use application-specific SQL Server permissions instead of unrestricted database access.
+- **Backup and recovery workflows** — Demonstrate full, differential, and transaction-log backups, with point-in-time recovery validation.
+- **Query performance tuning** — Evaluate index-based optimization using SQL Server logical-read measurements.
+- **Reproducible administration labs** — Provide SQL scripts and documentation for setup, backup inventory, recovery, security, and tuning.
 
 ## 🧠 Machine Learning
 
-DeepDerma integrates three CNN architectures for image classification:
+DeepDerma integrates three CNN architectures for image classification.
 
 | Model | Role |
 |---|---|
@@ -65,27 +54,27 @@ DeepDerma integrates three CNN architectures for image classification:
 
 The application provides a common interface for comparing model outputs and exploring the classes included in the training dataset.
 
-The trained model files are not included in this repository. See the setup section before running the application.
+Trained model files are not included in this repository. Refer to the setup documentation for local configuration requirements.
 
 **Important:** Model outputs are experimental classifications, not medically validated diagnoses. They should not be used to make healthcare decisions.
 
 ## 🖥️ Application and Data Layer
 
-The Streamlit application provides the user interface for image uploads and model comparisons. Python handles application logic and model inference, while Microsoft SQL Server stores structured application records.
+The Streamlit application provides the interface for image uploads and model comparisons. Python handles application logic and model inference, while Microsoft SQL Server stores structured application records.
 
 The database layer supports:
 
 - Model and experiment records
 - Prediction history and per-model class scores
 - Audit-event records
-- Application connectivity using environment-based credentials
+- Environment-based credential handling
 - Restricted application permissions
 
-This separation of the interface, inference logic, and persistent data helps demonstrate how machine-learning applications can be supported by a structured backend.
+This separation of the interface, inference logic, and persistent data demonstrates how a machine-learning application can be supported by a structured backend.
 
 ## 🗄️ Database Engineering and Reliability
 
-SQL Server is an important part of DeepDerma's supporting infrastructure, providing opportunities to explore practical database administration alongside application development.
+SQL Server is a core component of DeepDerma's supporting infrastructure, providing opportunities to demonstrate practical database administration alongside application development.
 
 ### Backup and recovery
 
@@ -101,27 +90,28 @@ SQL Server is an important part of DeepDerma's supporting infrastructure, provid
 
 - SQL logins, database users, roles, and permissions
 - Restricted permissions for the application database user
-- Environment-based password handling rather than hardcoded credentials
+- Environment-based password handling instead of hardcoded credentials
+- Application access designed around least privilege
 
 ### Performance optimization
 
-An index-tuning exercise reduced logical reads from **14 to 2** for the tested query — an approximately **85.7% reduction in logical reads**.
+An index-tuning exercise reduced logical reads from **14 to 2** for the tested query, an approximately **85.7% reduction in logical reads**.
 
-This result applies to the measured test workload. It does not establish a corresponding improvement in query elapsed time.
+This result applies to the measured workload. Elapsed time did not improve in the original test, so the reduction in logical reads should not be interpreted as proof of faster execution.
 
 ### Automation and documentation
 
-PowerShell supports local application startup, while SQL Server Agent handles scheduled database jobs. Supporting documentation covers backup retention, point-in-time recovery, project architecture, and validation evidence.
+PowerShell supports local application startup, while SQL Server Agent handles scheduled database jobs. Supporting scripts and documentation describe backup operations, recovery procedures, validation, security, and query tuning.
 
 ## 🛠️ Technology Stack
 
 | Area | Technologies |
 |---|---|
 | Machine learning | TensorFlow/Keras, DenseNet201, ResNet101, EfficientNetB0 |
-| Programming | Python |
+| Programming | Python, T-SQL |
 | User interface | Streamlit |
-| Database | Microsoft SQL Server 2022, T-SQL |
-| Database administration | SQL Server Management Studio (SSMS), SQL Server Agent |
+| Database | Microsoft SQL Server, SQL Server Management Studio |
+| Database administration | SQL Server Agent, backup and recovery, permissions, query tuning |
 | Automation | Windows PowerShell |
 | Testing and version control | Python tests, Git, GitHub |
 
@@ -129,66 +119,81 @@ PowerShell supports local application startup, while SQL Server Agent handles sc
 
 ```text
 DeepDerma-LabOps/
-├── app/                 # Streamlit application and model/database logic
-├── database/            # SQL schema, seed scripts, and database tests
-├── docs/                # Project overview, recovery runbook, and retention policy
-├── screenshots/         # Application and database validation evidence
+├── app/                 # Streamlit application and database logic
 ├── artifacts/           # Model reference hashes
+├── database/            # Schema, seed data, backup, recovery and tuning scripts
+├── docs/                # Setup, recovery, retention and script documentation
+├── notebooks/           # Portfolio notebook
+├── screenshots/         # Application and database validation evidence
 ├── tests/               # Automated tests
 ├── run_app.ps1          # Local application launcher
 ├── README.md
 └── .gitignore
 ```
 
+The tree is a simplified overview. Refer to the repository for the complete file list.
+
+## 📚 Documentation
+
+- **[Setup Guide](docs/Setup-Guide.md)** — Configure the application on a local Windows environment.
+- **[Database Scripts Review](docs/Database-Scripts-Review.md)** — Understand the SQL scripts, intended usage, and validation limitations.
+- **[Point-in-Time Recovery Runbook](docs/PITR-Recovery-Runbook.md)** — Review the documented recovery workflow.
+- **[Backup Retention Policy](docs/Backup-Retention-Policy.md)** — Understand the retention approach and outstanding verification requirements.
+- **[Project Overview](docs/Project-Overview.md)** — Explore the project background and architecture.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - Windows
-- Python and the project's required Python packages
-- Microsoft SQL Server with the required database and schema
-- The trained model files required by the application
+- A compatible Python installation
+- Microsoft SQL Server and SQL Server Management Studio
+- The Python dependencies required by the application
+- Trained model files compatible with the application
 
 ### Setup
 
-1. Clone the repository:
+1. **Clone the repository.**
 
    ```powershell
    git clone https://github.com/MounikaBeera/DeepDerma-LabOps.git
    cd DeepDerma-LabOps
    ```
 
-2. Review the SQL scripts in `database/`, particularly `01_create_schema.sql` and `02_seed_models.sql`, before running them in your own SQL Server environment.
+2. **Configure Python.** Follow the [Setup Guide](docs/Setup-Guide.md) and install the project's dependencies in a compatible environment.
 
-3. Configure the database connection in `app/database.py` for your SQL Server instance and database.
+3. **Configure SQL Server.** Review `database/01_create_schema.sql` and `database/02_seed_models.sql`. Adapt the scripts to your instance and execute them in the documented order.
 
-4. Obtain the trained model files separately and place them in the expected `models/` directory. The model files are excluded from this repository because of their size.
+4. **Configure the connection.** Review `app/database.py` and supply your own SQL Server instance, database, and authentication settings. Configure the application login with only the permissions required by the app.
 
-5. Review `run_app.ps1` and adjust its local Python import path if your environment differs. Ensure the required Python packages are installed.
+5. **Obtain the model files.** The trained model files are not distributed with this repository. Place compatible files in the expected local model directory and verify their paths before launching the application.
 
-6. Launch the application from PowerShell:
+6. **Review the launcher.** Inspect `run_app.ps1` and update any machine-specific Python paths. Confirm the required packages are installed.
+
+7. **Launch the application.**
 
    ```powershell
    .\run_app.ps1
    ```
 
-   The launcher prompts for the SQL application login password when it starts.
+   The launcher prompts for the SQL application login password. Review the script before running it in your own environment.
 
-**Security note:** Never commit database passwords, access tokens, or other secrets. Use a dedicated application login with appropriate permissions, and configure your local environment for your own SQL Server instance.
+**Security note:** Never commit database passwords, access tokens, or other secrets. Use a dedicated application login, environment-based credentials, and appropriate permissions.
 
-## 📸 Project Evidence
+For detailed instructions and troubleshooting, see the [Setup Guide](docs/Setup-Guide.md).
 
-The `screenshots/` directory includes evidence of:
+## 🧪 Validation and Project Evidence
 
-- The application interface
-- SQL Server Agent backup jobs
-- Point-in-time recovery execution
-- Recovered database row counts
-- Database integrity validation
-- Query execution-plan and logical-read comparisons
-- Backup retention reporting
+The project includes database and recovery validation work covering:
 
-Detailed procedures and limitations are documented in the `docs/` directory.
+- Database consistency checks using `DBCC CHECKDB`
+- Restored database status and table row-count comparisons
+- Backup-history and retention reporting
+- Query logical-read and execution-plan comparisons
+- SQL Server Agent backup automation
+- Point-in-time recovery testing
+
+Screenshots and supporting evidence are maintained in `screenshots/`, where available. Validation results apply to the documented lab environment and should not be interpreted as guarantees for every backup or deployment.
 
 ## ⚠️ Scope and Limitations
 
@@ -196,15 +201,19 @@ Detailed procedures and limitations are documented in the `docs/` directory.
 - Image classifications are experimental and are not a substitute for professional medical advice.
 - Trained model files are not distributed in this repository.
 - Database scripts and configuration should be reviewed and adapted before use in another environment.
-- Backup retention coverage should not be considered fully verified until the complete retention window has been validated.
+- The complete seven-day backup retention window has not been verified.
+- Query performance results depend on the workload, data distribution, indexes, execution plan, and caching.
+- A successful database consistency check does not, by itself, prove that every historical backup is recoverable.
 
 ## 👩‍💻 Author
 
 **Mounika Beera**
 
+Interested in SQL Server database administration, Python development, and data systems.
 
-Interested in SQL Server database administration, Python development and data systems.
+- **GitHub:** [MounikaBeera](https://github.com/MounikaBeera)
+- **Project:** [DeepDerma-LabOps](https://github.com/MounikaBeera/DeepDerma-LabOps)
 
 ---
 
-*DeepDerma LabOps brings together machine learning, application development, and database engineering in one end-to-end project.*
+*DeepDerma LabOps brings together machine learning, application development, and database engineering in one end-to-end portfolio project.*
