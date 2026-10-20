@@ -19,6 +19,19 @@ Install or prepare the following:
 
 Check the repository for the current dependency files before installing packages.
 
+## Dataset Download
+
+The image dataset used for this project is available on Kaggle:
+
+**[Skin Disease Classification Image Dataset — Download on Kaggle](https://www.kaggle.com/datasets/riyaelizashaju/skin-disease-classification-image-dataset/data)**
+
+1. Open the Kaggle dataset page and sign in if required.
+2. Download the dataset and extract the files.
+3. Review the dataset's folder structure and update the image or dataset path in your local configuration if needed.
+4. Use the images for local testing in accordance with the dataset's license and terms.
+
+**Note:** The dataset is separate from this GitHub repository and must be downloaded independently. Downloading it does not automatically configure the application or provide the trained model files.
+
 ## 3. Clone the Repository
 
 Open PowerShell:
